@@ -11,7 +11,6 @@ def merge_and_count_inversions(a):
 	sorted_b = merge_and_count_inversions(b)
 	sorted_c = merge_and_count_inversions(c)
 	d = []
-	i = j = 0
 
 	#No inversion between sorted_b and sorted_c
 	if sorted_b[-1] < sorted_c[0]:
