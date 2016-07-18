@@ -10,15 +10,11 @@ def merge_and_count_inversions(a):
 	c = a[size/2:]
 	sorted_b = merge_and_count_inversions(b)
 	sorted_c = merge_and_count_inversions(c)
-	d = []
-
-	#No inversion between sorted_b and sorted_c
+	d = left = []
 	if sorted_b[-1] < sorted_c[0]:
 		d = sorted_b + sorted_c
 		return d
-
 	i = j = 0
-	left = []
 	for index in range(0, size):
 		if sorted_b[i] <= sorted_c[j]:
 			d.append(sorted_b[i])
@@ -33,9 +29,7 @@ def merge_and_count_inversions(a):
 			if j == len(sorted_c):
 				left = sorted_b[i:]
 				break
-	d += left
-
-	return d
+	return d +left
 
 def main():
 	myfile = open('IntegerArray.txt')
