@@ -4,7 +4,6 @@ import random
 def main():
 	myfile = open('KargerMinCut.txt')
 	adjlist = {}
-	edges = []
 	nodeId = 1
 	for line in myfile:
 		indices = line.split()
@@ -14,27 +13,66 @@ def main():
 			indexSet.add(item)
 		adjlist[nodeId] = indexSet
 		nodeId += 1
-	tempEdgeSet = set()
+	edgeSet = set()
 	for nodeId in adjlist:
 		for adjId in adjlist[nodeId]:
 			if nodeId > adjId:
-				tempEdgeSet.add((adjId, nodeId))
+				edgeSet.add((adjId, nodeId))
 			else:
-				tempEdgeSet.add((nodeId, adjId))
-	for item in tempEdgeSet:
-		edges.append(item)
-	while len(edges) > 2:
-	 	sel = random.randint(0,len(edges) - 1)
-		edge = edges[sel]
-		nodeA, nodeB = adjlist[edge[0]], adjlist[edge[1]]
-		print edge[0], adjlist[edge[0]]
-		print edge[1], adjlist[edge[1]]
+				edgeSet.add((nodeId, adjId))
+	fakeRnd = 0
+	edge = (0, 0)
+	while len(edgeSet) > 2:
+	 	#sel = random.randint(0,len(edgeSet) - 1)
+		sel = fakeRnd
+		counter = 0
+		for item in edgeSet:
+			if counter == sel:
+				edge = item
+			counter += 1
+		print "Contracted edge: "+str(sel)
+		print edge
+		nodeA = adjlist[edge[0]]
+		nodeB = adjlist[edge[1]]								
+		nodeA = nodeA | nodeB		#merge B's adjacent nodes into A's
+		adjlist[edge[0]] = nodeA	#updating A in adjacent list
+		adjlist.pop(edge[1])		#remove B from adjacnet list
+		print "before remove:"+str(len(edgeSet))
+		edgeSet.remove(edge)		#remove the contracted edge
+		print "after remove:"+str(len(edgeSet))
+		remList = []
+		addList = []
+		for item in edgeSet:			#all Bs in edge set are replaced with A
+			if item[0] == edge[1]:
+				remList.append(item)
+				print "if: "+str(item)
+				if edge[0] < item[1]:
+					addList.append((edge[0], item[1]))
+				else:
+					addList.append((item[1], edge[0]))
+			elif item[1] == edge[1]:
+				remList.append(item)
+				print "else: "+str(item)
+				if item[0] < edge[0]:
+					addList.append((item[0], edge[0]))
+				else:
+					addList.append((edge[0], item[0]))
+		print remList
+		print addList
+		for item in remList:
+			edgeSet.remove(item)
+		for item in addList:
+			if item[0] != item[1]:
+				edgeSet.add(item)
+				
+		#print edge[0], adjlist[edge[0]]
+		#print edge[1], adjlist[edge[1]]
 		# nodeA.remove(edge[1])
 		# nodeB.remove(edge[0])
 		# nodeA = nodeA | nodeB
 		# adjlist.pop(edge[1])
 		# adjlist[edge[0]] = nodeA
-		# edges.remove(edge)
+		fakeRnd += 1
 				
 if __name__ == "__main__":
 	main()
