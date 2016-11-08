@@ -1,13 +1,12 @@
 '''
 Exercise 5: Dijkstra algorithm with O(m*n) running time
 '''
-G = []
-A = []
+from heap import MinHeap
+G, A, X = [], [], []
 E = {}
-X = []
 
 def read():
-	global A, G
+	global A
 	with open('dijkstraData.txt') as f:
 	#with open('testData.txt') as f:	
 		for line in f:
@@ -30,31 +29,31 @@ def minScore(E):
 	d = E[w]
 	for k, v in E.items():
 		if v < d:
-			w = k
-			d = v
+			w, d = k, v
 	return w, d
 
 def dij(s):
-	minHeap = MinHeap()
 	A[s] = 0
 	X.append(s)
-	adjl = G[s]
-	for i in adjl:
-		E[i[0]] = i[1]
+	minHeap = MinHeap(G[s])
 	while len(X) < len(G):
-		w, d = minScore(E)
-		A[w] = d
-		X.append(w)
-		del E[w]
-		for i in G[w]:
-			if A[i[0]] != -1:
-				continue
-			t = A[w] + i[1]
-			if i[0] in E:
-				if t < E[i[0]]:
-					E[i[0]] = t
-			else:
-				E[i[0]] = t
+		w = minHeap.extract()
+		
+	# 	E[i[0]] = i[1]
+	# while len(X) < len(G):
+	# 	w, d = minScore(E)
+	# 	A[w] = d
+	# 	X.append(w)
+	# 	del E[w]
+	# 	for i in G[w]:
+	# 		if A[i[0]] != -1:
+	# 			continue
+	# 		t = A[w] + i[1]
+	# 		if i[0] in E:
+	# 			if t < E[i[0]]:
+	# 				E[i[0]] = t
+	# 		else:
+	# 			E[i[0]] = t
 
 def myprint():
 	print("Dijkstra min distance to source ...")
