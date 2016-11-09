@@ -26,7 +26,7 @@ class Heap:
 			self.heapify(i)
 
 class MaxHeap(Heap):
-
+	
 	def heapify(self, i):
 		l = Heap.left(self, i)
 		r = Heap.right(self, i)
