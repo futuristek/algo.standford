@@ -1,15 +1,12 @@
 '''
-Exercise 5: Dijkstra algorithm with O(m*n) running time
+Exercise 5: Dijkstra algorithm simpler version with O(m*n)
 '''
-G = []
-A = []
-E = {}
-X = []
+import sys
+G, A, X = [], [], []
 
 def read():
-	global A, G
+	global A, X
 	with open('dijkstraData.txt') as f:
-	#with open('testData.txt') as f:	
 		for line in f:
 			adjl = []
 			line = line.rstrip('\r\n')
@@ -22,38 +19,25 @@ def read():
 				n_d[0] -= 1
 				adjl.append(n_d)
 			G.append(adjl)
-	A = [-1]*len(G)
+			X.append(int(t[0]) - 1)
+	A = [sys.maxsize]*len(G)
 
-def minScore(E):
-	keys = list(E.keys())
-	w = keys[0]
-	d = E[w]
-	for k, v in E.items():
-		if v < d:
-			w = k
-			d = v
-	return w, d
+def minDist():
+	m, i = A[X[0]], 0
+	for n in range(len(X)):
+		if A[X[n]] < m:
+			m, i = A[X[n]], n
+	return m, i
 
 def dij(s):
 	A[s] = 0
-	X.append(s)
-	adjl = G[s]
-	for i in adjl:
-		E[i[0]] = i[1]
-	while len(X) < len(G):
-		w, d = minScore(E)
-		A[w] = d
-		X.append(w)
-		del E[w]
-		for i in G[w]:
-			if A[i[0]] != -1:
-				continue
-			t = A[w] + i[1]
-			if i[0] in E:
-				if t < E[i[0]]:
-					E[i[0]] = t
-			else:
-				E[i[0]] = t
+	while len(X) > 0:
+		m, i = minDist()
+		X[-1], X[i] = X[i], X[-1]
+		X.pop()
+		for n in G[i]:
+			if m + n[1] < A[n[0]]:
+				A[n[0]] = m + n[1]
 
 def myprint():
 	print("Dijkstra min distance to source ...")
