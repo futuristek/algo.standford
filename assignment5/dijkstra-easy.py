@@ -6,7 +6,8 @@ G, A, X = [], [], []
 
 def read():
 	global A, X
-	with open('dijkstraData.txt') as f:
+	#with open('dijkstraData.txt') as f:
+	with open('testData.txt') as f:	
 		for line in f:
 			adjl = []
 			line = line.rstrip('\r\n')
@@ -33,15 +34,16 @@ def dij(s):
 	A[s] = 0
 	while len(X) > 0:
 		m, i = minDist()
-		X[-1], X[i] = X[i], X[-1]
-		X.pop()
-		for n in G[i]:
+		for n in G[X[i]]:
 			if m + n[1] < A[n[0]]:
 				A[n[0]] = m + n[1]
+		X[-1], X[i] = X[i], X[-1]
+		X.pop()
 
 def myprint():
 	print("Dijkstra min distance to source ...")
-	print(A[7 - 1],A[37 - 1],A[59 - 1],A[82 - 1],A[99 - 1],A[115 - 1],A[133 - 1],A[165 - 1],A[188 - 1],A[197 - 1], sep=',')
+	#print(A[7 - 1],A[37 - 1],A[59 - 1],A[82 - 1],A[99 - 1],A[115 - 1],A[133 - 1],A[165 - 1],A[188 - 1],A[197 - 1], sep=',')
+	print(A)
 
 def main():
 	read()

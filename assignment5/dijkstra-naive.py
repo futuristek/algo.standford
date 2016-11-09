@@ -9,7 +9,6 @@ X = []
 def read():
 	global A, G
 	with open('dijkstraData.txt') as f:
-	#with open('testData.txt') as f:	
 		for line in f:
 			adjl = []
 			line = line.rstrip('\r\n')
