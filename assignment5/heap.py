@@ -26,7 +26,7 @@ class Heap:
 			self.heapify(i)
 
 class MaxHeap(Heap):
-	
+
 	def heapify(self, i):
 		l = Heap.left(self, i)
 		r = Heap.right(self, i)
@@ -39,6 +39,46 @@ class MaxHeap(Heap):
 		if largest != i:
 			a[i], a[largest] = a[largest], a[i]
 			self.heapify(largest)
+	
+	def bubble_up(self, i):
+		if i == 0:
+			return
+		else:
+			p = Heap.parent(self, i)
+			if self.a[i] <= self.a[p]:
+				return
+			else:
+				self.a[i], self.a[p] = self.a[p], self.a[i]
+				self.bubble_up(p)
+
+	def insert(self, k):
+		self.a.append(k)
+		t = len(self.a) - 1
+		self.bubble_up(t)
+
+	def bubble_down(self, i):
+		l = Heap.left(self, i)
+		if l >= len(self.a):
+			return
+		else:
+			r = Heap.right(self, i)
+			largest = i
+			if self.a[l] > self.a[i]:
+				largest = l
+			if r < len(self.a) and self.a[r] > self.a[largest]:
+				largest = r
+			if largest == i:
+				return
+			else:
+				self.a[i], self.a[largest] = self.a[largest], self.a[i]
+				self.bubble_down(largest)
+
+	def extract(self):
+		tmp = self.a[0]
+		self.a[0] = self.a[-1]
+		self.a.pop()
+		self.bubble_down(0)
+		return tmp
 
 class MinHeap(Heap):
 
@@ -115,21 +155,26 @@ class MinHeap(Heap):
 				self.a[0], self.a[smallest] = self.a[smallest], self.a[0]
 				self.buble_down(smallest)
 
-# if __name__ == '__main__':
-# 	b = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
-# 	print("array: ", str(b))
-# 	min_heap = MinHeap(b[:])
-# 	max_heap = MaxHeap(b[:])
-# 	min_heap.build_heap()
-# 	max_heap.build_heap()
-# 	print("min heap: ", str(min_heap.a))
-# 	print("max heap: ", str(max_heap.a))	
-# 	print("insert 0: ")
-# 	min_heap.insert(0)
-# 	print("result: ", str(min_heap.a))
-# 	print("extract min: ", str(min_heap.extract()))
-# 	print("result: ", str(min_heap.a))
-# 	print("update heap: ")
-# 	min_heap = MinHeap(b[:])
-# 	min_heap.update(5, 6.5)
-# 	print("result: ", str(min_heap.a))
+if __name__ == '__main__':
+	b = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+	print("array: ", str(b))
+	min_heap = MinHeap(b[:])
+	max_heap = MaxHeap(b[:])
+	min_heap.build_heap()
+	max_heap.build_heap()
+	print("min heap: ", str(min_heap.a))
+	print("insert 0: ")
+	min_heap.insert(0)
+	print("result: ", str(min_heap.a))
+	print("extract min: ", str(min_heap.extract()))
+	print("result: ", str(min_heap.a))
+	print("max heap: ", str(max_heap.a))	
+	print("insert 12: ")
+	max_heap.insert(12)
+	print("result: ", str(max_heap.a))
+	print("extract max: ", str(max_heap.extract()))
+	print("result: ", str(max_heap.a))
+	print("update min heap: ")
+	min_heap = MinHeap(b[:])
+	min_heap.update(5, 6.5)
+	print("result: ", str(min_heap.a))
