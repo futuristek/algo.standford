@@ -25,6 +25,15 @@ class Heap:
 		for i in reversed(range(int(s/2))):
 			self.heapify(i)
 
+	def top(self):
+		return self.a[0]
+
+	def size(self):
+		return len(self.a)
+
+	def print(self):
+		print(self.a)
+
 class MaxHeap(Heap):
 
 	def heapify(self, i):
